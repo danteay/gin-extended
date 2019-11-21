@@ -6,7 +6,6 @@ require (
 	github.com/danteay/ginrest v0.0.1
 	github.com/danteay/openapi-assert v0.11.1
 	github.com/fatih/structs v1.1.0 // indirect
-	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/gin v1.4.0
 	github.com/golang/protobuf v1.3.2 // indirect
