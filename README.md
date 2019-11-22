@@ -1,6 +1,6 @@
-# Gin-Gonic Extended Commons
+# Gin-Gonic Extended
 
-this package stores usefully middlewares and libraries that could be implemented
+This package stores usefully middlewares and libraries that could be implemented
 on a Gin project
 
 ## Installation
