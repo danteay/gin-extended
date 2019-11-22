@@ -155,7 +155,7 @@ import (
 func main(){
     app := gin.New()
 
-    app.Use(mw.Authentication())
+    app.Use(mw.SwaggerValidator())
 
     // ....
 
@@ -176,7 +176,7 @@ import (
 func main(){
     app := gin.New()
 
-    app.Use(mw.AuthenticationWithConfig(&mw.AuthorizationConfig{
+    app.Use(mw.SwaggerValidatorWithConfig(&mw.SwaggerValidatorConfig{
         Document: "my_spec_file.yml"
     }))
 
