@@ -20,7 +20,7 @@ const (
 )
 
 // ZeroLogConfig defines the config for ZeroLog middleware.
-type ZeroLogConfig struct {
+type ZerologConfig struct {
 	// FieldMap set a list of fields with tags
 	//
 	// Tags to constructed the logger fields.
@@ -52,7 +52,7 @@ type ZeroLogConfig struct {
 }
 
 // DefaultZeroLogConfig is the default ZeroLog middleware config.
-var DefaultZeroLogConfig = ZeroLogConfig{
+var DefaultZeroLogConfig = &ZerologConfig{
 	FieldMap: map[string]string{
 		"remote_ip": "@remote",
 		"uri":       "@uri",
@@ -65,12 +65,12 @@ var DefaultZeroLogConfig = ZeroLogConfig{
 }
 
 // ZeroLog Create a default ZeroLog middleware
-func ZeroLog() gin.HandlerFunc {
-	return ZeroLogWithConfig(DefaultZeroLogConfig)
+func Zerolog() gin.HandlerFunc {
+	return ZerologWithConfig(DefaultZeroLogConfig)
 }
 
 // ZeroLogWithConfig Create ZeroLog middleware for logging
-func ZeroLogWithConfig(conf ZeroLogConfig) gin.HandlerFunc {
+func ZerologWithConfig(conf *ZerologConfig) gin.HandlerFunc {
 	var skip map[string]struct{}
 
 	if length := len(conf.SkipPaths); length > 0 {
