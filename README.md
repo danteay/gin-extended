@@ -6,7 +6,7 @@ on a Gin project
 ## Installation
 
 ```bash
-go get -u -v github.com/danteay/gin-extended-commons
+go get -u -v github.com/danteay/gin-extended
 ```
 
 ## Content
