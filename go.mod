@@ -14,5 +14,6 @@ require (
 	github.com/rs/zerolog v1.17.2
 	github.com/ugorji/go v1.1.7 // indirect
 	golang.org/x/sys v0.0.0-20191120155948-bd437916bb0e // indirect
+	gopkg.in/go-playground/assert.v1 v1.2.1
 	gopkg.in/yaml.v2 v2.2.7
 )

@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"net/http"
+	"regexp"
 	"strings"
 
 	"github.com/danteay/ginrest"
@@ -43,6 +44,9 @@ type AuthorizationConfig struct {
 
 	// SkipPaths static paths that will not apply the middleware
 	SkipPaths []string
+
+	// RegexpSkipPaths regular expresions for http routes that will skip the middleware
+	RegexpSkipPaths []string
 
 	// ObjectResponse value for response payload key "object"
 	ObjectResponse string
@@ -93,7 +97,7 @@ func AuthorizationWithConfig(conf *AuthorizationConfig) gin.HandlerFunc {
 
 		var err error
 
-		if _, ok := skip[path]; !ok {
+		if _, ok := skip[path]; !ok && !conf.skipRegexpPath(path) {
 			switch conf.Type {
 			case "bearer":
 				err = conf.bearerAuth(c)
@@ -170,4 +174,16 @@ func (ac *AuthorizationConfig) basicAuth(c *gin.Context) error {
 	}
 
 	return nil
+}
+
+func (ac *AuthorizationConfig) skipRegexpPath(path string) bool {
+	for _, reg := range ac.RegexpSkipPaths {
+		exp := regexp.MustCompile(reg)
+
+		if exp.MatchString(path) {
+			return true
+		}
+	}
+
+	return false
 }
