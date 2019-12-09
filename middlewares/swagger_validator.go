@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// SwaggerValidatorConfig configuration schema for Swagger validator
 type SwaggerValidatorConfig struct {
 	// SkipPaths list of static paths that will not apply the swagger validator middleware
 	SkipPaths []string

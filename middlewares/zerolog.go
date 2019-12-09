@@ -19,7 +19,7 @@ const (
 	HeaderReferer = "Referer"
 )
 
-// ZeroLogConfig defines the config for ZeroLog middleware.
+// ZerologConfig defines the config for ZeroLog middleware.
 type ZerologConfig struct {
 	// FieldMap set a list of fields with tags
 	//
@@ -64,12 +64,12 @@ var DefaultZeroLogConfig = &ZerologConfig{
 	Logger: log.Output(zerolog.ConsoleWriter{Out: os.Stderr}),
 }
 
-// ZeroLog Create a default ZeroLog middleware
+// Zerolog Create a default ZeroLog middleware
 func Zerolog() gin.HandlerFunc {
 	return ZerologWithConfig(DefaultZeroLogConfig)
 }
 
-// ZeroLogWithConfig Create ZeroLog middleware for logging
+// ZerologWithConfig Create ZeroLog middleware for logging
 func ZerologWithConfig(conf *ZerologConfig) gin.HandlerFunc {
 	var skip map[string]struct{}
 

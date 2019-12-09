@@ -6,8 +6,8 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-// ParseYmlFile parse a .yml file into a provided struct
-func ParseYmlFile(file string, cfg interface{}) error {
+// YmlFile parse a .yml file into a provided struct
+func YmlFile(file string, cfg interface{}) error {
 	data, err := ioutil.ReadFile(file)
 	if err != nil {
 		return err
@@ -21,8 +21,8 @@ func ParseYmlFile(file string, cfg interface{}) error {
 	return nil
 }
 
-// ShouldParseYmlFile  parse a .yml file and panics if any error happens
-func ShouldParseYmlFile(file string, cfg interface{}) {
+// ShouldYmlFile  parse a .yml file and panics if any error happens
+func ShouldYmlFile(file string, cfg interface{}) {
 	data, err := ioutil.ReadFile(file)
 	if err != nil {
 		panic(err)
