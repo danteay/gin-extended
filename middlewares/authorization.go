@@ -4,7 +4,6 @@ import (
 	"encoding/base64"
 	"errors"
 	"net/http"
-	"regexp"
 	"strings"
 
 	"github.com/danteay/ginrest"
@@ -97,7 +96,7 @@ func AuthorizationWithConfig(conf *AuthorizationConfig) gin.HandlerFunc {
 
 		var err error
 
-		if _, ok := skip[path]; !ok && !conf.skipRegexpPath(path) {
+		if _, ok := skip[path]; !ok && !skipRegexpPath(conf.RegexpSkipPaths, path) {
 			switch conf.Type {
 			case "bearer":
 				err = conf.bearerAuth(c)
@@ -174,16 +173,4 @@ func (ac *AuthorizationConfig) basicAuth(c *gin.Context) error {
 	}
 
 	return nil
-}
-
-func (ac *AuthorizationConfig) skipRegexpPath(path string) bool {
-	for _, reg := range ac.RegexpSkipPaths {
-		exp := regexp.MustCompile(reg)
-
-		if exp.MatchString(path) {
-			return true
-		}
-	}
-
-	return false
 }
