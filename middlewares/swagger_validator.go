@@ -12,6 +12,9 @@ type SwaggerValidatorConfig struct {
 	// SkipPaths list of static paths that will not apply the swagger validator middleware
 	SkipPaths []string
 
+	// RegexpSkipPaths regular expresions for http routes that will skip the middleware
+	RegexpSkipPaths []string
+
 	// ObjectResponse value for response payload key "object"
 	ObjectResponse string
 
@@ -64,8 +67,10 @@ func SwaggerValidatorWithConfig(conf *SwaggerValidatorConfig) gin.HandlerFunc {
 		u := c.Request.RequestURI
 		r := ginrest.New(u, "").SetGin(c)
 
+		path := c.Request.URL.Path
+
 		// Validate if the current path should be skipped
-		if _, ok := skip[c.Request.URL.Path]; !ok {
+		if _, ok := skip[path]; !ok && !skipRegexpPath(conf.RegexpSkipPaths, path) {
 			// Validating request schema
 			if err := assert.Request(c.Request); err != nil {
 				if conf.ObjectResponse == "" {
