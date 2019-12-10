@@ -24,11 +24,26 @@ type CorsConfig struct {
 }
 
 var (
+	// DefaultCorsHeaders list of default allowed headers for request
+	DefaultCorsHeaders = []string{
+		"Authentication",
+		"Content-Type",
+		"Origin",
+		"Accept",
+		"Cache-Control",
+		"Postman-Token",
+		"User-Agent",
+		"Cache-Control",
+		"Host",
+		"Accept-Encoding",
+		"Connection",
+	}
+
 	// DefaultCorsConfig default configuration for cors middleware
 	DefaultCorsConfig = &CorsConfig{
 		AllowOrigins: []string{"*"},
 		AllowMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowHeaders: []string{"Authentication", "Content-Type", "Origin", "Accept", "Cache-Control", "Postman-Token"},
+		AllowHeaders: DefaultCorsHeaders,
 	}
 )
 
