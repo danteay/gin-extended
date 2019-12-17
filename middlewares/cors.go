@@ -30,7 +30,7 @@ type CorsConfig struct {
 var (
 	// DefaultCorsHeaders list of default allowed headers for request
 	DefaultCorsHeaders = []string{
-		"Authentication",
+		"Authorization",
 		"Content-Type",
 		"Origin",
 		"Accept",
@@ -96,6 +96,10 @@ func CorsWithConfig(conf *CorsConfig) gin.HandlerFunc {
 
 			headers := strings.Join(conf.AllowHeaders, ",")
 			c.Writer.Header().Set("Access-Control-Allow-Headers", headers)
+		}
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(200)
 		}
 
 		c.Next()
