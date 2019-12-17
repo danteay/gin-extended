@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"strings"
 )
@@ -13,14 +14,17 @@ type CorsConfig struct {
 	// RegexpSkipPaths regular expresions for http routes that will skip the middleware
 	RegexpSkipPaths []string
 
-	// AllowOrigins origins that are allowed to request the service
-	AllowOrigins []string
+	// AllowOrigin origin that are allowed to request the service
+	AllowOrigin string
 
 	// AllowMethods methods that are allowed to be requested
 	AllowMethods []string
 
 	// AllowHeaders allowed headers
 	AllowHeaders []string
+
+	// AllowCredentials validate allowed credentials
+	AllowCredentials string
 }
 
 var (
@@ -41,9 +45,12 @@ var (
 
 	// DefaultCorsConfig default configuration for cors middleware
 	DefaultCorsConfig = &CorsConfig{
-		AllowOrigins: []string{"*"},
-		AllowMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowHeaders: DefaultCorsHeaders,
+		AllowOrigin:      "*",
+		AllowCredentials: "true",
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     DefaultCorsHeaders,
+		SkipPaths:        []string{},
+		RegexpSkipPaths:  []string{},
 	}
 )
 
@@ -54,8 +61,8 @@ func Cors() gin.HandlerFunc {
 
 // CorsWithConfig retrive a cors middleware with custom configuration
 func CorsWithConfig(conf *CorsConfig) gin.HandlerFunc {
-	if conf.AllowOrigins == nil {
-		conf.AllowOrigins = DefaultCorsConfig.AllowOrigins
+	if conf.AllowOrigin == "" {
+		conf.AllowOrigin = DefaultCorsConfig.AllowOrigin
 	}
 
 	if conf.AllowMethods == nil {
@@ -79,17 +86,19 @@ func CorsWithConfig(conf *CorsConfig) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		path := c.Request.URL.Path
 
-		c.Next()
-
 		if _, ok := skip[path]; !ok && !skipRegexpPath(conf.RegexpSkipPaths, path) {
-			origins := strings.Join(conf.AllowOrigins, ",")
-			c.Request.Response.Header.Set("Access-Control-Allow-Origin", origins)
+			fmt.Println(conf)
+			c.Writer.Header().Set("Access-Control-Allow-Origin", conf.AllowOrigin)
+
+			c.Writer.Header().Set("Access-Control-Allow-Credentials", conf.AllowCredentials)
 
 			methods := strings.Join(conf.AllowMethods, ",")
-			c.Request.Response.Header.Set("Access-Control-Allow-Headers", methods)
+			c.Writer.Header().Set("Access-Control-Allow-Headers", methods)
 
 			headers := strings.Join(conf.AllowHeaders, ",")
-			c.Request.Response.Header.Set("Access-Control-Allow-Headers", headers)
+			c.Writer.Header().Set("Access-Control-Allow-Headers", headers)
 		}
+
+		c.Next()
 	}
 }
