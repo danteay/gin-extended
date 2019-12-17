@@ -1,9 +1,9 @@
 package middlewares
 
 import (
-	"fmt"
-	"github.com/gin-gonic/gin"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 // CorsConfig base configuration for cors request
@@ -87,7 +87,6 @@ func CorsWithConfig(conf *CorsConfig) gin.HandlerFunc {
 		path := c.Request.URL.Path
 
 		if _, ok := skip[path]; !ok && !skipRegexpPath(conf.RegexpSkipPaths, path) {
-			fmt.Println(conf)
 			c.Writer.Header().Set("Access-Control-Allow-Origin", conf.AllowOrigin)
 
 			c.Writer.Header().Set("Access-Control-Allow-Credentials", conf.AllowCredentials)
