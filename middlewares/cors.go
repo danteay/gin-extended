@@ -1,9 +1,9 @@
 package middlewares
 
 import (
-	"fmt"
-	"github.com/gin-gonic/gin"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 // CorsConfig base configuration for cors request
@@ -30,7 +30,7 @@ type CorsConfig struct {
 var (
 	// DefaultCorsHeaders list of default allowed headers for request
 	DefaultCorsHeaders = []string{
-		"Authentication",
+		"Authorization",
 		"Content-Type",
 		"Origin",
 		"Accept",
@@ -87,7 +87,6 @@ func CorsWithConfig(conf *CorsConfig) gin.HandlerFunc {
 		path := c.Request.URL.Path
 
 		if _, ok := skip[path]; !ok && !skipRegexpPath(conf.RegexpSkipPaths, path) {
-			fmt.Println(conf)
 			c.Writer.Header().Set("Access-Control-Allow-Origin", conf.AllowOrigin)
 
 			c.Writer.Header().Set("Access-Control-Allow-Credentials", conf.AllowCredentials)
@@ -97,6 +96,10 @@ func CorsWithConfig(conf *CorsConfig) gin.HandlerFunc {
 
 			headers := strings.Join(conf.AllowHeaders, ",")
 			c.Writer.Header().Set("Access-Control-Allow-Headers", headers)
+		}
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(200)
 		}
 
 		c.Next()
